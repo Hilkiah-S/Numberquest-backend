@@ -11,5 +11,14 @@ async function createaccount(username, profilepic) {
     return user;
 }
 
+async function checkUsernameAvaliablity(username) {
 
-module.exports={createaccount};
+
+    const user = await userModel.findOne({ username})
+    if(!user){
+        return true;
+    }
+    return false;
+}
+
+module.exports={createaccount,checkUsernameAvaliablity};

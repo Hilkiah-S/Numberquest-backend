@@ -6,7 +6,7 @@ async function createaccount(req, res) {
     try {
 
         const {username,profilepic}=req.body;
-        const result = await userservice.creataccount(username,profilepic)
+        const result = await userservice.createaccount(username,profilepic)
         if (!result)
             return res.json({ "success": false, "msg": "creating user failed" }, 400)
 
@@ -27,10 +27,10 @@ async function checkUsernameAvaliablity(req, res) {
         const {username}=req.body;
         const result = await userservice.checkUsernameAvaliablity(username)
         if (!result)
-            return res.json({ "success": false, "msg": "creating user failed" }, 400)
+            return res.json({ "success": false, "msg": "Username is taken" }, 400)
 
 
-        return res.json({ "success": true, "data": { ...result._doc,createdpassword } })
+        return res.json({ "success": true, "msg":"Username is avaliable"  })
     } catch (e) {
         if (e?.code == 11000)
             return res.json({ "success": false, "msg": "User already exist" }, 400)

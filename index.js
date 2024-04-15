@@ -27,6 +27,7 @@ app.use((req,res,next)=>{
     next();
 })
 app.use('/user',userRouter)
+
 // app.use('/score',ScoreRouter)
 
 app.use((err,req,res,next)=>{
