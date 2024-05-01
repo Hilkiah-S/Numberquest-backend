@@ -11,7 +11,7 @@ async function createaccount(req, res) {
             return res.json({ "success": false, "msg": "creating user failed" }, 400)
 
 
-        return res.json({ "success": true, "data": { ...result._doc,createdpassword } })
+        return res.json({ "success": true, "data": { ...result._doc } })
     } catch (e) {
         if (e?.code == 11000)
             return res.json({ "success": false, "msg": "User already exist" }, 400)
