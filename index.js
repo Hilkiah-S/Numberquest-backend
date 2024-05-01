@@ -8,7 +8,10 @@ const cors =require("cors")
 require('dotenv').config();
 const axios = require('axios');
 const socketIo = require('socket.io');
-
+const http = require('http');
+const server = http.createServer(app);
+const io = socketIo(server);
+  
 mongoose.connect(process.env.MONGO_URI).then(
     ()=>{
         console.log("Connectd to MongoDB")
