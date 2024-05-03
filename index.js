@@ -11,13 +11,17 @@ const socketIo = require('socket.io');
 const http = require('http');
 const server = http.createServer(app);
 const io = socketIo(server);
-  
+const { v4: uuidv4 } = require('uuid');  
 mongoose.connect(process.env.MONGO_URI).then(
     ()=>{
         console.log("Connectd to MongoDB")
         app.listen(process.env.PORT,()=>{
             console.log('Node running on port'+process.env.PORT);
-        } )
+            
+        } );
+        server.listen(process.env.IOPORT, () => {
+            console.log('Node and Socket.IO running on port ' + process.env.IOPORT);
+        });
     }
 ).catch(
     (error)=>{
@@ -34,7 +38,31 @@ app.use((req,res,next)=>{
     next();
 })
 app.use('/user',userRouter)
+io.on('connection', (socket) => {
+    console.log('A user connected');
+    
+  
 
+    socket.on('createRoom', () => {
+        const roomId = uuidv4(); 
+        socket.join(roomId);
+        socket.emit('roomID', roomId); 
+        console.log(`Room created with ID: ${roomId}`);
+    });
+
+    socket.on('join', (roomId) => {
+        socket.join(roomId);
+        console.log(`User joined room ${roomId}`);
+    });
+
+    socket.on('message', (data) => {
+        io.to(data.room).emit('message', data.msg);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
+});
 // app.use('/score',ScoreRouter)
 
 app.use((err,req,res,next)=>{

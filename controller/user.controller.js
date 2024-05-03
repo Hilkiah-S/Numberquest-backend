@@ -8,10 +8,10 @@ async function createaccount(req, res) {
         const {username,profilepic}=req.body;
         const result = await userservice.createaccount(username,profilepic)
         if (!result)
-            return res.json({ "success": false, "msg": "creating user failed" }, 400)
+            // return res.json({ "success": false, "msg": "creating user failed" }, 400)
+            return res.status(400).json({ "success": false, "msg": "creating user failed" })
 
-
-        return res.json({ "success": true, "data": { ...result._doc } })
+        return res.status(200).json({ "success": true, "data": { ...result._doc } })
     } catch (e) {
         if (e?.code == 11000)
             return res.json({ "success": false, "msg": "User already exist" }, 400)
