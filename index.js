@@ -19,9 +19,9 @@ mongoose.connect(process.env.MONGO_URI).then(
             console.log('Node running on port'+process.env.PORT);
             
         } );
-        server.listen(process.env.IOPORT, () => {
-            console.log('Node and Socket.IO running on port ' + process.env.IOPORT);
-        });
+    server.listen(process.env.IOPORT, () => {
+        console.log('Node and Socket.IO running on port ' + process.env.IOPORT);
+    });
     }
 ).catch(
     (error)=>{
@@ -38,6 +38,11 @@ app.use((req,res,next)=>{
     next();
 })
 app.use('/user',userRouter)
+// app.use('/socket',req,res,next){
+//     server.listen(process.env.IOPORT, () => {
+//         console.log('Node and Socket.IO running on port ' + process.env.IOPORT);
+//     });
+// }
 io.on('connection', (socket) => {
     console.log('A user connected');
     
